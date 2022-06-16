@@ -26,6 +26,8 @@ class QuestionController extends AbstractController
             'Fuzzy slippers',
             'This isn\'t a question so much as it is a statement I think'
         ];
+
+        dump($this);
         // recall that the controllers always require a RESPONSE OBJ be returned.
         // THUS: render returns a response object
         return $this->render('questions/show.html.twig', [
