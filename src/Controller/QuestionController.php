@@ -8,12 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class QuestionController extends AbstractController
 {
-    /**
-     * @Route("/")
-     */
+    #[Route('/')] // php 8 feature
     public function homepage()
     {
-        return new Response('What a bewitching controller we have conjured!');
+        return $this->render('questions/homepage.html.twig');
     }
 
     /**
