@@ -15,7 +15,7 @@ Class MarkdownHelper
     {
         $this->markdownParser = $markdownParser;
         $this->cache = $cache;    
-        $this->debug = $isDebug;
+        $this->debug = $isDebug; // in the services.yaml file we hardcoded this value as a param
     }
     public function parse(string $source) : string
     {
