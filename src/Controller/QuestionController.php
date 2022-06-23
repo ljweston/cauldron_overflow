@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -70,6 +71,8 @@ class QuestionController extends AbstractController
                 $question->setAskedAt(new DateTimeImmutable(sprintf('-%d days', rand(1, 100))));
             }
 
+            $question->setVotes(rand(-20, 50));
+
             $entityManager->persist($question);
             $entityManager->flush();
 
@@ -83,18 +86,13 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show($slug, MarkdownHelper $markdownHelper, EntityManagerInterface $entityManager)
+    public function show(Question $question)
     {
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode');
         }
-
-        $repository = $entityManager->getRepository(Question::class);
-        /** @var Question|null $question */
-        $question = $repository->findOneby(['slug' => $slug]);
-        if (!$question) {
-            throw $this->createNotFoundException(sprintf('No question found for slug "%s"', $slug));
-        }
+        // symfony sees the "Question" type hint and looks for the wildcard value of "slug"
+        // slug matches the property name of our entity "Question"
 
         $answers = [
             'Make sure the cat is sitting `purrrfectly` still',
@@ -114,6 +112,23 @@ class QuestionController extends AbstractController
         //     'Future page to show a question "%s"!',
         //     ucwords(str_replace('-', '', $slug)) 
         // ));
+    }
+
+    /**
+     * @Route("/questions/{slug}/vote", name="app_question_vote", methods="POST")
+     */
+    public function questionVote(Question $question, Request $request)
+    {
+        // Request is not a type hint. It is data from our form we submit
+        $direction = $request->request->get('direction');
+
+        if ($direction === 'up') {
+            $question->upVote();
+        } elseif ($direction === 'down') {
+            $question->downVote();
+        }
+
+
     }
 
 }
