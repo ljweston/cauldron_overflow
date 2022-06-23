@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Repository\QuestionRepository;
 use App\Service\MarkdownHelper;
 use DateTime;
 use DateTimeImmutable;
@@ -27,10 +28,15 @@ class QuestionController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage(EntityManagerInterface $entityManager)
+    public function homepage(QuestionRepository $repository)
     {
-        $repository = $entityManager->getRepository(Question::class);
-        // $questions = $repository->findBy([], ['askedAt' => 'DESC']); // specify in desc order
+        /**
+         * What we see below is how we normally get a repository. But we do not need to autowire the EntityManager
+         * The question repo is a service in the container.
+         * // $repository = $entityManager->getRepository(Question::class);
+         * // $questions = $repository->findBy([], ['askedAt' => 'DESC']); // specify in desc order
+         */
+        
         $questions = $repository->findAllAskedOrderByNewest();
         // $html = $twigEnvironment->render('questions/homepage.html.twig'); // returns string with html
 
@@ -45,6 +51,7 @@ class QuestionController extends AbstractController
      */
     public function new(EntityManagerInterface $entityManager )
     {
+        // When we need to save we use the EntityManagerInterface itself and not the repo we made
         $question = new Question();
 
         $question->setName("Magic Missing Pants")
