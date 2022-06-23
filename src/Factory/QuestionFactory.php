@@ -23,7 +23,7 @@ final class QuestionFactory extends ModelFactory
     {
         return $this->addState(['askedAt' => null]);
     }
-    
+
     protected function getDefaults(): array
     {
         return [
@@ -41,15 +41,10 @@ final class QuestionFactory extends ModelFactory
     protected function initialize(): self
     {
         // see https://github.com/zenstruck/foundry#initialization
-        return $this
-            ->afterInstantiate(function(Question $question) {
-                if (!$question->getSlug()) {
-                    $slugger = new AsciiSlugger(); // set the slug to be like the name of the question
-                    $question->setSlug($slugger->slug($question->getName()));
-                }
-            })
-        ;
+        return $this;
+            // ->afterInstantiate(function(Question $question) {
     }
+    
     protected static function getClass(): string
     {
         return Question::class;

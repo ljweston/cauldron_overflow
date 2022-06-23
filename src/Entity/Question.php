@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\Timestampable;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
+    use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -17,6 +21,7 @@ class Question
     private $name;
 
     #[ORM\Column(type: 'string', length: 100, unique: true, name: 'slug')]
+    #[Gedmo\Slug(fields: ['name'])]
     private $slug;
 
     #[ORM\Column(type: 'text')]
