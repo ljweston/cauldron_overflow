@@ -13,5 +13,10 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         QuestionFactory::new()->createMany(20);
+        // generate unpublished questions
+        QuestionFactory::new()
+            ->unpublished()
+            ->createMany(5)
+        ;
     }
 }
