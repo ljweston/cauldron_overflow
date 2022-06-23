@@ -23,7 +23,7 @@ class QuestionRepository extends ServiceEntityRepository
 
     public function add(Question $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($entity); 
 
         if ($flush) {
             $this->getEntityManager()->flush();
@@ -45,11 +45,9 @@ class QuestionRepository extends ServiceEntityRepository
    public function findAllAskedOrderByNewest(): array
    {
        return $this->createQueryBuilder('q')
-           ->andWhere('q.exampleField = :val')
-           ->setParameter('val', $value)
-           ->orderBy('q.id', 'ASC')
-           ->setMaxResults(10)
-           ->getQuery()
+           ->andWhere('q.askedAt IS NOT NULL')
+           ->orderBy('q.askedAt', 'DESC')
+           ->getQuery() 
            ->getResult()
        ;
    }
