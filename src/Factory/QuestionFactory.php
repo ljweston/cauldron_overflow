@@ -4,6 +4,7 @@ namespace App\Factory;
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
 use DateTime;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -18,24 +19,35 @@ use Zenstruck\Foundry\Proxy;
  */
 final class QuestionFactory extends ModelFactory
 {
+    public function unpublished(): self
+    {
+        return $this->addState(['askedAt' => null]);
+    }
+    
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->realText(),
-            'slug' => self::faker()->slug(),
+            'name' => self::faker()->realText(50),
+            // removed slug to instantiate below in init
             'question' => self::faker()->paragraphs(
                 self::faker()->numberBetween(1, 4),
                 true
             ),
-            'askedAt' => self::faker()->boolean(70) ? self::faker()->dateTimeBetween('-100 days', '-1 minute') : null,
+            'askedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
             'votes' => rand(-20, 50),
         ];
     }
+    // Add hooks!
     protected function initialize(): self
     {
         // see https://github.com/zenstruck/foundry#initialization
         return $this
-            // ->beforeInstantiate(function(Question $question) {})
+            ->afterInstantiate(function(Question $question) {
+                if (!$question->getSlug()) {
+                    $slugger = new AsciiSlugger(); // set the slug to be like the name of the question
+                    $question->setSlug($slugger->slug($question->getName()));
+                }
+            })
         ;
     }
     protected static function getClass(): string
