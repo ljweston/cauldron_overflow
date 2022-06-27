@@ -3,16 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
-use App\Service\MarkdownHelper;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 class QuestionController extends AbstractController
 {
@@ -61,21 +59,20 @@ class QuestionController extends AbstractController
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode');
         }
-        // symfony sees the "Question" type hint and looks for the wildcard value of "slug"
-        // slug matches the property name of our entity "Question"
+        /**
+         * symfony sees the "Question" type hint and looks for the wildcard value of "slug" to query
+         * slug matches the property name of our entity "Question"
+        */ 
 
-        $answers = [
-            'Make sure the cat is sitting `purrrfectly` still',
-            'Fuzzy slippers',
-            'This isn\'t a question so much as it is a statement I think'
-        ];
+        // question->getAnswers() does NOT get an array of answers is some sort of Doctrine Collection object
+        // $answers = $question->getAnswers(); // There is an easier way
+        // lazy loading: only do the query and loading when we ask it to. (like in the loop)
 
         // recall that the controllers always require a RESPONSE OBJ be returned.
         // THUS: render returns a response object
         return $this->render('questions/show.html.twig', [
             // array of data or vars passed in
-            'question' => $question,
-            'answers' => $answers
+            'question' => $question, // question has getAnswers(), use in twig
         ]);
 
         // return new Response(sprintf(

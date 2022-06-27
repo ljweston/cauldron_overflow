@@ -16,12 +16,13 @@
                                 <small>
                                     {% if question.askedAt %}
                                         Asked <br>
-                                        {{ question.askedAt|ago}}
+                                        {{ question.askedAt|ago }}
                                     {% else %}
                                         (unpublished)
                                     {% endif %}
                                 </small>
-                                <form action="{{ path('app_question_vote', {slug: question.slug }) }}" method="POST">
+
+                                <form action="{{ path('app_question_vote', { slug: question.slug }) }}" method="POST">
                                     <div class="vote-arrows vote-arrows-alt flex-fill pt-2" style="min-width: 90px;">
                                         <button class="vote-up btn btn-link" name="direction" value="up"><i class="far fa-arrow-alt-circle-up"></i></button>
                                         <button class="vote-down btn btn-link" name="direction" value="down"><i class="far fa-arrow-alt-circle-down"></i></button>
@@ -34,7 +35,7 @@
                             <h1 class="q-title-show">{{ question.name }}</h1>
                             <div class="q-display p-3">
                                 <i class="fa fa-quote-left mr-3"></i>
-                                <p class="d-inline">{{ question.question|raw }}</p>
+                                <p class="d-inline">{{ question.question|parse_markdown }}</p>
                                 <p class="pt-4"><strong>--Tisha</strong></p>
                             </div>
                         </div>
@@ -45,27 +46,46 @@
     </div>
 
     <div class="d-flex justify-content-between my-4">
-        <h2 class="">Answers <span style="font-size:1.2rem;">({{ answers|length }})</span></h2>
+        <h2 class="">Answers <span style="font-size:1.2rem;">({{ question.answers|length }})</span></h2>
         <button class="btn btn-sm btn-secondary">Submit an Answer</button>
     </div>
 
 
 
     <ul class="list-unstyled">
-        {% for answer in answers %}
+        {% for answer in question.answers %}
             <li class="mb-4">
-                <div class="d-flex justify-content-center">
-                    <div class="mr-2 pt-2">
+                <div class="row">
+                    <div class="col-1">
                         <img src="{{ asset('images/tisha.png') }}" width="50" height="50" alt="Tisha avatar">
                     </div>
-                    <div class="mr-3 pt-2">
-                        {{ answer|parse_markdown }}
-                        <p>-- Mallory</p>
+                    <div class="col-9">
+                        {{ answer.content|parse_markdown }}
+                        <p>-- {{ answer.username }}</p>
                     </div>
-                    <div class="vote-arrows flex-fill pt-2 js-vote-arrows" style="min-width: 90px;">
-                        <button class="vote-up btn btn-link" name="direction" value="up"><i class="far fa-arrow-alt-circle-up"></i></button>
-                        <button class="vote-down btn btn-link" name="direction" value="down"><i class="far fa-arrow-alt-circle-down"></i></button>
-                        <span>+ <span class="js-vote-total">6</span></span>
+                    <div class="col-2 text-end">
+                        <div
+                            class="vote-arrows"
+                            {{ stimulus_controller('answer-vote', {
+                                url: path('answer_vote', {
+                                    id: answer.id
+                                })
+                            }) }}
+                        >
+                            <button
+                                class="vote-up btn btn-link"
+                                name="direction"
+                                value="up"
+                                {{ stimulus_action('answer-vote', 'clickVote') }}
+                            ><i class="far fa-arrow-alt-circle-up"></i></button>
+                            <button
+                                class="vote-down btn btn-link"
+                                name="direction"
+                                value="down"
+                                {{ stimulus_action('answer-vote', 'clickVote') }}
+                            ><i class="far fa-arrow-alt-circle-down"></i></button>
+                            <span><span {{ stimulus_target('answer-vote', 'voteTotal') }}>{{ answer.votes }}</span></span>
+                        </div>
                     </div>
                 </div>
             </li>
