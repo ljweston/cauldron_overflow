@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Answer;
 use App\Entity\Question;
+use App\Factory\AnswerFactory;
 use App\Factory\QuestionFactory;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,18 +21,7 @@ class AppFixtures extends Fixture
             ->createMany(5)
         ;
 
-        $answer = new Answer();
-        $answer->setContent('This is a question test. I do not know the answer, lol.');
-        $answer->setUsername('weaverryan');
-
-        $question = new Question();
-        $question->setName('How to magically not be broke.');
-        $question->setQuestion('... I am broke. How do I make money?');
-        // set the relationship btwn ans and ques
-        $answer->setQuestion($question);
-
-        $manager->persist($answer);
-        $manager->persist($question);
+        AnswerFactory::createMany(100);
 
         $manager->flush();
     }
