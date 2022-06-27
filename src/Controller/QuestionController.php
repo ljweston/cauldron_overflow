@@ -29,13 +29,6 @@ class QuestionController extends AbstractController
      */
     public function homepage(QuestionRepository $repository)
     {
-        /**
-         * What we see below is how we normally get a repository. But we do not need to autowire the EntityManager
-         * The question repo is a service in the container.
-         * // $repository = $entityManager->getRepository(Question::class); // fetching repo
-         * // $questions = $repository->findBy([], ['askedAt' => 'DESC']); // specify in desc order
-         */
-        
         $questions = $repository->findAllAskedOrderByNewest();
         // $html = $twigEnvironment->render('questions/homepage.html.twig'); // returns string with html
 
@@ -43,6 +36,13 @@ class QuestionController extends AbstractController
         return $this->render('questions/homepage.html.twig', [
             'questions' => $questions
         ]);
+
+        /**
+         * What we see below is how we normally get a repository. But we do not need to autowire the EntityManager
+         * The question repo is a service in the container.
+         * // $repository = $entityManager->getRepository(Question::class); // fetching repo
+         * // $questions = $repository->findBy([], ['askedAt' => 'DESC']); // specify in desc order
+         */
     }
 
     /**
