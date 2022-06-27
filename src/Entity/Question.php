@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
@@ -35,7 +36,9 @@ class Question
     #[ORM\Column(type: 'integer')]
     private $votes = 0;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class)]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, fetch:"EXTRA_LAZY")]
+    // #[ORM\OrderBy({"createdAt" = "DESC"})]
+    // #[OrderBy({"createdAt" : "desc"})]
     private $answers; // oneToMany relationship with one class instance associated with multiple answers 
 
     public function __construct()
