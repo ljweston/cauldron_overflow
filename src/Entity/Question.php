@@ -148,9 +148,12 @@ class Question
         return $this->answers;
     }
 
-    public function getApprovedAnswers()
+    public function getApprovedAnswers() : Collection
     {
-        return $this->answers;
+        return $this->answers->filter(function(Answer $answer) {
+            return $answer->isApproved();
+        });
+        // return $this->answers;
         //->matching(AnswerRepository::createApprovedCriteria());
     }
 

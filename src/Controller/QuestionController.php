@@ -77,11 +77,6 @@ class QuestionController extends AbstractController
             // array of data or vars passed in
             'question' => $question, // question has getAnswers(), use in twig
         ]);
-
-        // return new Response(sprintf(
-        //     'Future page to show a question "%s"!',
-        //     ucwords(str_replace('-', '', $slug)) 
-        // ));
     }
 
     /**
