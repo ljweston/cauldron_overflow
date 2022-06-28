@@ -16,22 +16,40 @@ class AppFixtures extends Fixture
     {
         $questions = QuestionFactory::new()->createMany(20);
         // generate unpublished questions
+        // QuestionFactory::new()
+        //     ->unpublished()
+        //     ->createMany(5)
+        // ;
+
         QuestionFactory::new()
             ->unpublished()
-            ->createMany(5)
+            ->many(5)
+            ->create()
         ;
 
-        AnswerFactory::createMany(100, function() use ($questions){
+        AnswerFactory::createMany(100, function() use ($questions) {
             return [
-                'question' => $questions[array_rand($questions)],
+                'question' => $questions[array_rand($questions)]
             ];
         });
-
         AnswerFactory::new(function() use ($questions) {
             return [
-                'question' => $questions[array_rand($questions)],
+                'question' => $questions[array_rand($questions)]
             ];
         })->needsApproval()->many(20)->create();
+
         $manager->flush();
+        // AnswerFactory::createMany(100, function() use ($questions){
+        //     return [
+        //         'question' => $questions[array_rand($questions)],
+        //     ];
+        // });
+
+        // AnswerFactory::new(function() use ($questions) {
+        //     return [
+        //         'question' => $questions[array_rand($questions)],
+        //     ];
+        // })->needsApproval()->many(20)->create();
+        // $manager->flush();
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\AnswerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\QuestionRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OrderBy;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -36,10 +38,16 @@ class Question
     #[ORM\Column(type: 'integer')]
     private $votes = 0;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, fetch:"EXTRA_LAZY")]
-    // #[ORM\OrderBy({"createdAt" = "DESC"})]
-    // #[OrderBy({"createdAt" : "desc"})]
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question")
+     */
     private $answers; // oneToMany relationship with one class instance associated with multiple answers 
+
+    // public function __construct()
+    // {
+    //     $this->answers = [];
+    //     // new ArrayCollection();
+    // }
 
     public function __construct()
     {
@@ -140,11 +148,10 @@ class Question
         return $this->answers;
     }
 
-    public function getApprovedAnswers(): Collection
+    public function getApprovedAnswers()
     {
-        return $this->answers->filter(function(Answer $answer) {
-            return $answer->isApproved();
-        });
+        return $this->answers;
+        //->matching(AnswerRepository::createApprovedCriteria());
     }
 
     public function addAnswer(Answer $answer): self

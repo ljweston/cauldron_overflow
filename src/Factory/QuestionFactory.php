@@ -19,6 +19,13 @@ use Zenstruck\Foundry\Proxy;
  */
 final class QuestionFactory extends ModelFactory
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
+    }
+    
     public function unpublished(): self
     {
         return $this->addState(['askedAt' => null]);

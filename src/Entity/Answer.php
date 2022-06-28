@@ -30,7 +30,6 @@ class Answer
     private $votes = 0;
 
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'answers')]
-    #[ORM\JoinColumn(nullable: false)]
     private $question;// contains a question obj
     // ManyToOne relationship with multiple answers associated to a single class instance
 
