@@ -50,8 +50,6 @@
         <button class="btn btn-sm btn-secondary">Submit an Answer</button>
     </div>
 
-
-
     <ul class="list-unstyled">
         {% for answer in question.answers %}
             <li class="mb-4">
@@ -78,13 +76,13 @@
                                 value="up"
                                 {{ stimulus_action('answer-vote', 'clickVote') }}
                             ><i class="far fa-arrow-alt-circle-up"></i></button>
-                            <span><span {{ stimulus_target('answer-vote', 'voteTotal') }}>{{ answer.votes }}</span></span>
                             <button
                                 class="vote-down btn btn-link"
                                 name="direction"
                                 value="down"
                                 {{ stimulus_action('answer-vote', 'clickVote') }}
                             ><i class="far fa-arrow-alt-circle-down"></i></button>
+                            <span><span {{ stimulus_target('answer-vote', 'voteTotal') }}>{{ answer.votes }}</span></span>
                         </div>
                     </div>
                 </div>
