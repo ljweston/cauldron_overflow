@@ -43,11 +43,15 @@ class Question
      * @ORM\OrderBy({"createdAt"= "DESC"})]
      * AN ERROR HERE: IF WE USE ANNOTATION THE ANSWER WILL RETURN NULL!!!!!!
      */ 
-    private $answers; // oneToMany relationship with one class instance associated with multiple answers 
+    private $answers;
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'questions')]
+    private $tags; // oneToMany relationship with one class instance associated with multiple answers 
 
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,6 +172,33 @@ class Question
                 $answer->setQuestion(null);
             }
         }
+
+        return $this;
+    }
+    //
+    // ManyToMany relations
+    //
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
 
         return $this;
     }
