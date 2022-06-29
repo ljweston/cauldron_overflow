@@ -12,12 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnswerController extends AbstractController
 {
     /**
-     * @Route("/answers/{id}/vote", methods="POST", name="answer_vote")
+     * @Route("/answers/{id}/vote", name="answer_vote", methods="POST")
      */
     public function answerVote(Answer $answer, LoggerInterface $logger, Request $request, EntityManagerInterface $entityManager)
     {
         $data = json_decode($request->getContent(), true);
-        $direction = $data['direction'] ?? 'up';
+        // $data = json_decode($data['data'], true);
+        $direction = $data['data']['direction'] ?? 'up';
         // use real logic here to save this to the database
         if ($direction === 'up') {
             $logger->info('Voting up!');
