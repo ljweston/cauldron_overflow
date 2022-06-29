@@ -9,9 +9,10 @@
 
             <ul class="list-unstyled">
             {% for answer in answers %}
-                <li>{{ include('answers/_answer.html.twig',
-                    showQuestion: true
-                ) }}</li>
+                <li>{{ include('answers/_answer.html.twig', {
+                        showQuestion: true
+                    }) }}
+                    </li>
             {% endfor %}
             </ul>
         </div>

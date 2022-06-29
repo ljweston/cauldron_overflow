@@ -83,6 +83,16 @@ class Answer
         return $this->question;
     }
 
+    public function getQuestionText(): string
+    {
+        // coding defensively to avoid errors with new question instances
+        if (!$this->getQuestion()) {
+            return '';
+        }
+        // cast the returned question object to a string
+        return (string) $this->getQuestion()->getQuestion();
+    }
+
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;

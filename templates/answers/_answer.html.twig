@@ -6,8 +6,8 @@
             class="mb-1 link-secondary"
         >
             <strong>Question:</strong>
-            {# below gets question of the question object #}
-            {{ answer.question.question }}
+            {# filtering with the unicode keyword#}
+            {{ answer.questionText|u.truncate(80, '...') }}
         </a>
     {% endif %}
     <div class="row">
