@@ -66,6 +66,8 @@ class AnswerRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('answer')
             ->addCriteria(self::createApprovedCriteria())
             ->orderBy('answer.votes', 'DESC')
+            ->innerJoin('answer.question', 'question') // answer.question refers to answer entities question prop in answer class
+            ->addSelect('question') // grab everything from question
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
