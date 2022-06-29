@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Popular Answers{% endblock %}
+
+{% block body %}
+    <div class="container my-md-4">
+        <div class="row">
+            <h1>Most Popular Answers</h1>
+
+            <ul class="list-unstyled">
+            {% for answer in answers %}
+                <li>{{ include('answers/_answer.html.twig',
+                    showQuestion: true
+                ) }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
