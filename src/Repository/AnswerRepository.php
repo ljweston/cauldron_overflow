@@ -61,13 +61,19 @@ class AnswerRepository extends ServiceEntityRepository
     /**
      * @return Answer[]
      */
-    public function findMostPopular(): array
+    public function findMostPopular(string $search = null): array
     {
-        return $this->createQueryBuilder('answer')
+        $queryBuilder = $this->createQueryBuilder('answer')
             ->addCriteria(self::createApprovedCriteria())
             ->orderBy('answer.votes', 'DESC')
             ->innerJoin('answer.question', 'question') // answer.question refers to answer entities question prop in answer class
-            ->addSelect('question') // grab everything from question
+            ->addSelect('question'); // grab everything from question
+        // since we did an innerjoin of answer.question we can reference it with the below alias question.question
+        if ($search) {
+            $queryBuilder->andWhere('answer.content LIKE :searchTerm OR question.question LIKE :searchTerm')
+                ->setParameter('searchTerm', '%'.$search.'%');
+        }
+        return $queryBuilder
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
