@@ -12,7 +12,8 @@ export default class extends Controller {
         const button = event.currentTarget;
 
         axios.post(this.urlValue, {
-            data: JSON.stringify({ direction: button.value })
+            data: { direction: button.value }
+            //JSON.stringify({direction....})
         })
             .then((response) => {
                 this.voteTotalTarget.innerHTML = response.data.votes;
