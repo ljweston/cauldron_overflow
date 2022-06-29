@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controller;
+
 use App\Entity\Answer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
