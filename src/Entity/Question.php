@@ -45,9 +45,13 @@ class Question
      */ 
     private $answers;
 
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionTag::class)]
+    private $questionTags;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->questionTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +170,36 @@ class Question
             // set the owning side to null (unless already changed)
             if ($answer->getQuestion() === $this) {
                 $answer->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuestionTag>
+     */
+    public function getQuestionTags(): Collection
+    {
+        return $this->questionTags;
+    }
+
+    public function addQuestionTag(QuestionTag $questionTag): self
+    {
+        if (!$this->questionTags->contains($questionTag)) {
+            $this->questionTags[] = $questionTag;
+            $questionTag->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionTag(QuestionTag $questionTag): self
+    {
+        if ($this->questionTags->removeElement($questionTag)) {
+            // set the owning side to null (unless already changed)
+            if ($questionTag->getQuestion() === $this) {
+                $questionTag->setQuestion(null);
             }
         }
 
