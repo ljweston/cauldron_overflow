@@ -46,8 +46,13 @@ class QuestionRepository extends ServiceEntityRepository
     */
    public function findAllAskedOrderByNewest(): array
    {
+        // Doctrine wants us to believe there is a direct connection between TAGS and QUESTIONS
+        // to do the join we want the "MANY" tags for this question and let doctrine do the rest
+        // SO we do the LEFTJOIN
        return $this->addIsAskedQueryBuilder()
            ->orderBy('q.askedAt', 'DESC')
+           ->leftJoin('q.tags', 'tag')
+           ->addSelect('tag')
            ->getQuery() 
            ->getResult()
        ;
@@ -61,6 +66,7 @@ class QuestionRepository extends ServiceEntityRepository
 
    private function getOrCreateQueryBuilder(ORMQueryBuilder $qb = null): ORMQueryBuilder
    {
+        // this 'q' is what all of our queries will use to query question columns
         return $qb ?: $this->createQueryBuilder('q');
    }
 
