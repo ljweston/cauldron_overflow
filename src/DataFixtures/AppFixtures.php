@@ -2,8 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Answer;
-use App\Entity\Question;
 use App\Entity\Tag;
 use App\Factory\AnswerFactory;
 use App\Factory\QuestionFactory;
