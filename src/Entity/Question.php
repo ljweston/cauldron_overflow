@@ -176,7 +176,7 @@ class Question
         return $this;
     }
     //
-    // ManyToMany relations
+    // ManyToMany relation
     //
 
     /**
