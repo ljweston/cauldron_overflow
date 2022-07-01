@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Query\QueryBuilder;
+// use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\QueryBuilder as ORMQueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,20 +41,16 @@ class QuestionRepository extends ServiceEntityRepository
         }
     }
 
-   /**
-    * @return Question[] Returns an array of Question objects
-    */
-   public function findAllAskedOrderByNewest(): array
+   public function createAskedOrderedByNewestQueryBuilder(): ORMQueryBuilder
    {
         // Doctrine wants us to believe there is a direct connection between TAGS and QUESTIONS
         // to do the join we want the "MANY" tags for this question and let doctrine do the rest
         // SO we do the LEFTJOIN
        return $this->addIsAskedQueryBuilder()
            ->orderBy('q.askedAt', 'DESC')
-           ->leftJoin('q.tags', 'tag')
-           ->addSelect('tag')
-           ->getQuery() 
-           ->getResult()
+           ->leftJoin('q.questionTags', 'question_tag')
+           ->innerJoin('question_tag.tag', 'tag')
+           ->addSelect(['question_tag', 'tag'])
        ;
    }
    // Function to modify passed queryBuilder to accept what we pass in

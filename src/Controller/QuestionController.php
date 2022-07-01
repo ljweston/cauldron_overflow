@@ -6,6 +6,8 @@ use App\Entity\Question;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,18 +23,22 @@ class QuestionController extends AbstractController
         $this->logger = $logger;
         $this->isDebug = $isDebug;
     }
-    // #[Route('/', name:"app_homepage")] // php 8 feature
-    /**
-     * @Route("/", name="app_homepage")
-     */
-    public function homepage(QuestionRepository $repository)
-    {
-        $questions = $repository->findAllAskedOrderByNewest();
-        // $html = $twigEnvironment->render('questions/homepage.html.twig'); // returns string with html
 
+    /** only match if page is a digit "\d+"
+     * @Route("/{page<\d+>}", name="app_homepage")
+     */
+    public function homepage(QuestionRepository $repository, int $page = 1)
+    {
+        $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder();
+        // $html = $twigEnvironment->render('questions/homepage.html.twig'); // returns string with html
+        $pagerfanta = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagerfanta->setMaxPerPage(5);
+        $pagerfanta->setCurrentPage($page);
         // return new Response($html);
         return $this->render('questions/homepage.html.twig', [
-            'questions' => $questions
+            'pager' => $pagerfanta // passing this object that contains the questions
         ]);
 
         /**
