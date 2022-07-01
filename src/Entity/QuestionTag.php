@@ -26,7 +26,7 @@ class QuestionTag
 
     public function __construct()
     {
-        $this->taggedAt = new \DateTimeImmutable();
+        $this->taggedAt = new \DateTimeImmutable(); // defaults to now()
     }
 
     public function getId(): ?int
