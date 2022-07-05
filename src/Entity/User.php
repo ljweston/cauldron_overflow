@@ -4,10 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 // Look at that, still an entity
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,6 +23,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $firstName;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $password;
 
     public function getId(): ?int
     {
@@ -78,13 +82,12 @@ class User implements UserInterface
     }
 
     /**
-     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
-     *
      * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): ?string
     {
-        return null;
+        //NEVER STORE A PLAIN TEXT PASS
+        return $this->password;
     }
 
     /**
@@ -114,6 +117,13 @@ class User implements UserInterface
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
