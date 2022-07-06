@@ -11,11 +11,11 @@
     <div class="row">
         <div class="col-6">
             <h4>Production Report</h4>
-            {{ render_chart(chart) }}
+            {{ render_chart(chart, {'data-controller': 'mychart'}) }}
         </div>
         <div class="col-6">
             <h4>Accident Types</h4>
-            {{ render_chart(chart2) }}
+            {{ render_chart(chart2, {'data-controller': 'mychart'}) }}
         </div>
     </div>
 </div>
