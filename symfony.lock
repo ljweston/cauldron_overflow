@@ -234,6 +234,9 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.2.0"
+    },
     "symfony/web-profiler-bundle": {
         "version": "5.4",
         "recipe": {
