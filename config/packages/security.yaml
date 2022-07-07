@@ -19,10 +19,16 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            entry_point: App\Security\LoginFormAuthenticator
+            entry_point: form_login
             custom_authenticator:
-                - App\Security\LoginFormAuthenticator
+                # - App\Security\LoginFormAuthenticator # commented out to use the built-in FormLoginAuth
                 - App\Security\DummyAuthenticator
+            form_login: # key that activates the authenticator
+                login_path: app_login
+                check_path: app_login # submission path
+                username_parameter: email # usually seen as _username
+                password_parameter: password # usually seen as _password
+                enable_csrf: true
             logout: true
 
             remember_me:
