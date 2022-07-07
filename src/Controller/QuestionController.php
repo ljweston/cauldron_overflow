@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class QuestionController extends AbstractController
 {
@@ -51,9 +52,16 @@ class QuestionController extends AbstractController
 
     /**
      * @Route("/questions/new")
+     * @IsGranted("ROLE_USER")
      */
-    public function new(EntityManagerInterface $entityManager )
+    public function new()
     {
+        // force login
+        // $this->denyAccessUnlessGranted('ROLE_USER'); // can throw an access denied exception
+        // if (!$this->isGranted('ROLE_ADMIN')) {
+        //     throw $this->createAccessDeniedException('No access for you'); // error viewed by devs
+        // }
+
         return new Response('This sounds like a great feature for V2');
     }
 
