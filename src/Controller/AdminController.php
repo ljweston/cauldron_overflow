@@ -54,11 +54,22 @@ class AdminController extends AbstractController
             'chart2' => $chart2,
         ]);
     }
+
     /**
      * @Route("/admin/login")
      */
     public function adminLogin()
     {
+        return new Response('PRETEND ADMIN LOGIN PAGE THAT SHOULD BE PUBLIC');
+    }
+
+    /**
+     * @Route("/admin/answers")
+     */
+    public function adminAnswers()
+    {
+        $this->denyAccessUnlessGranted('ROLE_COMMENT_ADMIN');
+        
         return new Response('PRETEND ADMIN LOGIN PAGE THAT SHOULD BE PUBLIC');
     }
 }
