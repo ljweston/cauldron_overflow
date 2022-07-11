@@ -38,11 +38,7 @@ class Question
     private $votes = 0;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, fetch:"EXTRA_LAZY")]
-    /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"createdAt"= "DESC"})]
-     * AN ERROR HERE: IF WE USE ANNOTATION THE ANSWER WILL RETURN NULL!!!!!!
-     */ 
+    #[ORM\OrderBy(['createdAt'=> 'DESC'])]
     private $answers;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionTag::class)]
