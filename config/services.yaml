@@ -14,7 +14,7 @@ services:
         bind:
             bool $isDebug: '%kernel.debug%'
             Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown' 
-            $formLoginAuthenticator: '@security.authenticator.form_login.main'
+            # $formLoginAuthenticator: '@security.authenticator.form_login.main'
             # the '@' refers to a SERVICE
 
     # makes classes in src/ available to be used as services
