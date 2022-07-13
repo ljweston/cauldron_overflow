@@ -16,6 +16,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -24,9 +25,11 @@ security:
             lazy: true
             provider: app_user_provider
             entry_point: form_login
+
             custom_authenticator:
                 # - App\Security\LoginFormAuthenticator # commented out to use the built-in FormLoginAuth
                 - App\Security\DummyAuthenticator
+                
             form_login: # key that activates the authenticator
                 login_path: app_login
                 check_path: app_login # submission path
