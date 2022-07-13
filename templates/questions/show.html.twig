@@ -21,12 +21,16 @@
                                         (unpublished)
                                     {% endif %}
                                 </small>
-
+                                {# VOTING FORM for question -> might want to replicate answer vote and prevent multiple votes#}
                                 <form action="{{ path('app_question_vote', { slug: question.slug }) }}" method="POST">
                                     <div class="vote-arrows vote-arrows-alt flex-fill pt-2" style="min-width: 90px;">
+                                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                    
                                         <button class="vote-up btn btn-link" name="direction" value="up"><i class="far fa-arrow-alt-circle-up"></i></button>
-                                        <span>{{ question.votesString }}</span>
+                                        
                                         <button class="vote-down btn btn-link" name="direction" value="down"><i class="far fa-arrow-alt-circle-down"></i></button>
+                                        {% endif %}
+                                        <span>{{ question.votesString }}</span>
                                     </div>
                                 </form>
                             </div>
