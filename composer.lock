@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "013f539d8e9a631c538fbe65f84945a8",
+    "content-hash": "4e419b659268d3f797602356999927fa",
     "packages": [
         {
             "name": "babdev/pagerfanta-bundle",
@@ -88,6 +88,60 @@
                 }
             ],
             "time": "2022-05-27T20:58:26+00:00"
+        },
+        {
+            "name": "bacon/bacon-qr-code",
+            "version": "2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bacon/BaconQrCode.git",
+                "reference": "d70c840f68657ce49094b8d91f9ee0cc07fbf66c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/d70c840f68657ce49094b8d91f9ee0cc07fbf66c",
+                "reference": "d70c840f68657ce49094b8d91f9ee0cc07fbf66c",
+                "shasum": ""
+            },
+            "require": {
+                "dasprid/enum": "^1.0.3",
+                "ext-iconv": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phly/keep-a-changelog": "^2.1",
+                "phpunit/phpunit": "^7 | ^8 | ^9",
+                "spatie/phpunit-snapshot-assertions": "^4.2.9",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "suggest": {
+                "ext-imagick": "to generate QR code images"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BaconQrCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Scholzen 'DASPRiD'",
+                    "email": "mail@dasprids.de",
+                    "homepage": "https://dasprids.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "BaconQrCode is a QR code generator for PHP.",
+            "homepage": "https://github.com/Bacon/BaconQrCode",
+            "support": {
+                "issues": "https://github.com/Bacon/BaconQrCode/issues",
+                "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.7"
+            },
+            "time": "2022-03-14T02:02:36+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -270,6 +324,53 @@
                 }
             ],
             "time": "2022-02-21T13:15:14+00:00"
+        },
+        {
+            "name": "dasprid/enum",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DASPRiD/Enum.git",
+                "reference": "5abf82f213618696dda8e3bf6f64dd042d8542b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DASPRiD/Enum/zipball/5abf82f213618696dda8e3bf6f64dd042d8542b2",
+                "reference": "5abf82f213618696dda8e3bf6f64dd042d8542b2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7 | ^8 | ^9",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DASPRiD\\Enum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Scholzen 'DASPRiD'",
+                    "email": "mail@dasprids.de",
+                    "homepage": "https://dasprids.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP 7.1 enum implementation",
+            "keywords": [
+                "enum",
+                "map"
+            ],
+            "support": {
+                "issues": "https://github.com/DASPRiD/Enum/issues",
+                "source": "https://github.com/DASPRiD/Enum/tree/1.0.3"
+            },
+            "time": "2020-10-02T16:03:48+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1642,6 +1743,81 @@
             "time": "2022-05-23T21:33:49+00:00"
         },
         {
+            "name": "endroid/qr-code",
+            "version": "3.9.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/endroid/qr-code.git",
+                "reference": "94563d7b3105288e6ac53a67ae720e3669fac1f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/94563d7b3105288e6ac53a67ae720e3669fac1f6",
+                "reference": "94563d7b3105288e6ac53a67ae720e3669fac1f6",
+                "shasum": ""
+            },
+            "require": {
+                "bacon/bacon-qr-code": "^2.0",
+                "khanamiryan/qrcode-detector-decoder": "^1.0.5",
+                "myclabs/php-enum": "^1.5",
+                "php": "^7.3||^8.0",
+                "symfony/options-resolver": "^3.4||^4.4||^5.0",
+                "symfony/property-access": "^3.4||^4.4||^5.0"
+            },
+            "require-dev": {
+                "endroid/quality": "^1.5.2",
+                "setasign/fpdf": "^1.8"
+            },
+            "suggest": {
+                "ext-gd": "Required for generating PNG images",
+                "roave/security-advisories": "Avoids installation of package versions with vulnerabilities",
+                "setasign/fpdf": "Required to use the FPDF writer.",
+                "symfony/security-checker": "Checks your composer.lock for vulnerabilities"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Endroid\\QrCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeroen van den Enden",
+                    "email": "info@endroid.nl"
+                }
+            ],
+            "description": "Endroid QR Code",
+            "homepage": "https://github.com/endroid/qr-code",
+            "keywords": [
+                "bundle",
+                "code",
+                "endroid",
+                "php",
+                "qr",
+                "qrcode"
+            ],
+            "support": {
+                "issues": "https://github.com/endroid/qr-code/issues",
+                "source": "https://github.com/endroid/qr-code/tree/3.9.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/endroid",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-04-20T19:10:54+00:00"
+        },
+        {
             "name": "friendsofphp/proxy-manager-lts",
             "version": "v1.0.12",
             "source": {
@@ -2147,6 +2323,61 @@
             "time": "2021-10-08T21:21:46+00:00"
         },
         {
+            "name": "khanamiryan/qrcode-detector-decoder",
+            "version": "1.0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/khanamiryan/php-qrcode-detector-decoder.git",
+                "reference": "04fdd58d86a387065f707dc6d3cc304c719910c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/04fdd58d86a387065f707dc6d3cc304c719910c1",
+                "reference": "04fdd58d86a387065f707dc6d3cc304c719910c1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 | ^7.5 | ^8.0 | ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/Common/customFunctions.php"
+                ],
+                "psr-4": {
+                    "Zxing\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ashot Khanamiryan",
+                    "email": "a.khanamiryan@gmail.com",
+                    "homepage": "https://github.com/khanamiryan",
+                    "role": "Developer"
+                }
+            ],
+            "description": "QR code decoder / reader",
+            "homepage": "https://github.com/khanamiryan/php-qrcode-detector-decoder/",
+            "keywords": [
+                "barcode",
+                "qr",
+                "zxing"
+            ],
+            "support": {
+                "issues": "https://github.com/khanamiryan/php-qrcode-detector-decoder/issues",
+                "source": "https://github.com/khanamiryan/php-qrcode-detector-decoder/tree/1.0.5.2"
+            },
+            "time": "2021-07-13T18:46:38+00:00"
+        },
+        {
             "name": "knplabs/knp-markdown-bundle",
             "version": "1.10.0",
             "source": {
@@ -2513,6 +2744,66 @@
             "time": "2022-06-09T08:59:12+00:00"
         },
         {
+            "name": "myclabs/php-enum",
+            "version": "1.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/php-enum.git",
+                "reference": "b942d263c641ddb5190929ff840c68f78713e937"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/b942d263c641ddb5190929ff840c68f78713e937",
+                "reference": "b942d263c641ddb5190929ff840c68f78713e937",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "1.*",
+                "vimeo/psalm": "^4.6.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyCLabs\\Enum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP Enum contributors",
+                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
+                }
+            ],
+            "description": "PHP Enum implementation",
+            "homepage": "http://github.com/myclabs/php-enum",
+            "keywords": [
+                "enum"
+            ],
+            "support": {
+                "issues": "https://github.com/myclabs/php-enum/issues",
+                "source": "https://github.com/myclabs/php-enum/tree/1.8.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/php-enum",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-07-05T08:18:36+00:00"
+        },
+        {
             "name": "pagerfanta/core",
             "version": "v3.6.1",
             "source": {
@@ -2799,16 +3090,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.14.2",
+            "version": "1.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "c8d48852fbc052454af42f6de27635ddd916b959"
+                "reference": "31d8ee46d0215108df16a8527c7438e96a4d7735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/c8d48852fbc052454af42f6de27635ddd916b959",
-                "reference": "c8d48852fbc052454af42f6de27635ddd916b959",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/31d8ee46d0215108df16a8527c7438e96a4d7735",
+                "reference": "31d8ee46d0215108df16a8527c7438e96a4d7735",
                 "shasum": ""
             },
             "require": {
@@ -2860,9 +3151,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.14.2"
+                "source": "https://github.com/php-http/discovery/tree/1.14.3"
             },
-            "time": "2022-05-25T07:26:05+00:00"
+            "time": "2022-07-11T14:04:40+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -3719,30 +4010,30 @@
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.0.2",
+            "version": "v5.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "606e907479aa6c55bc1a28c983e1e9e7b4842ba7"
+                "reference": "dc575cc7bc94fa3a52b547698086f2ef015d2e81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/606e907479aa6c55bc1a28c983e1e9e7b4842ba7",
-                "reference": "606e907479aa6c55bc1a28c983e1e9e7b4842ba7",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/dc575cc7bc94fa3a52b547698086f2ef015d2e81",
+                "reference": "dc575cc7bc94fa3a52b547698086f2ef015d2e81",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "~8.0.0 || ~8.1.0",
-                "symfony/config": "^5.4 || ^6.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0",
-                "symfony/event-dispatcher": "^5.4 || ^6.0",
-                "symfony/framework-bundle": "^5.4 || ^6.0",
-                "symfony/http-foundation": "^5.4 || ^6.0",
-                "symfony/http-kernel": "^5.4 || ^6.0",
-                "symfony/property-access": "^5.4 || ^6.0",
-                "symfony/security-bundle": "^5.4 || ^6.0",
-                "symfony/twig-bundle": "^5.4 || ^6.0"
+                "php": ">=7.2.5",
+                "symfony/config": "^4.4|^5.0",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/event-dispatcher": "^4.4|^5.0",
+                "symfony/framework-bundle": "^4.4|^5.0",
+                "symfony/http-foundation": "^4.4|^5.0",
+                "symfony/http-kernel": "^4.4|^5.0",
+                "symfony/property-access": "^4.4|^5.0",
+                "symfony/security-bundle": "^4.4.1|^5.0",
+                "symfony/twig-bundle": "^4.4|^5.0"
             },
             "conflict": {
                 "scheb/two-factor-bundle": "*"
@@ -3751,6 +4042,7 @@
                 "scheb/2fa-backup-code": "Emergency codes when you have no access to other methods",
                 "scheb/2fa-email": "Send codes by email",
                 "scheb/2fa-google-authenticator": "Google Authenticator support",
+                "scheb/2fa-qr-code": "Generate QR codes for Google Authenticator / TOTP",
                 "scheb/2fa-totp": "Temporary one-time password (TOTP) support (Google Authenticator compatible)",
                 "scheb/2fa-trusted-device": "Trusted devices support"
             },
@@ -3780,29 +4072,77 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.0.2"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v5.13.2"
             },
-            "time": "2022-04-16T10:15:33+00:00"
+            "time": "2022-04-16T10:18:34+00:00"
         },
         {
-            "name": "scheb/2fa-totp",
-            "version": "v6.0.2",
+            "name": "scheb/2fa-qr-code",
+            "version": "v5.13.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/scheb/2fa-totp.git",
-                "reference": "ab0ce4542f3f440e5fab08bebf052fe6d73abcfa"
+                "url": "https://github.com/scheb/2fa-qr-code.git",
+                "reference": "1b30d3f32c443c20ddbd4830c7b41dfd17e4dcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-totp/zipball/ab0ce4542f3f440e5fab08bebf052fe6d73abcfa",
-                "reference": "ab0ce4542f3f440e5fab08bebf052fe6d73abcfa",
+                "url": "https://api.github.com/repos/scheb/2fa-qr-code/zipball/1b30d3f32c443c20ddbd4830c7b41dfd17e4dcaf",
+                "reference": "1b30d3f32c443c20ddbd4830c7b41dfd17e4dcaf",
                 "shasum": ""
             },
             "require": {
-                "paragonie/constant_time_encoding": "^2.4",
-                "php": "~8.0.0 || ~8.1.0",
+                "endroid/qr-code": "^3.0",
+                "scheb/2fa-bundle": "self.version"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Scheb\\TwoFactorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Scheb",
+                    "email": "me@christianscheb.de"
+                }
+            ],
+            "description": "Extends scheb/2fa-bundle with the ability to render QR-codes for Google Authenticator or TOTP",
+            "homepage": "https://github.com/scheb/2fa",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "qr-code",
+                "symfony",
+                "two-factor",
+                "two-step"
+            ],
+            "support": {
+                "source": "https://github.com/scheb/2fa-qr-code/tree/v5.13.2"
+            },
+            "time": "2022-01-03T10:21:24+00:00"
+        },
+        {
+            "name": "scheb/2fa-totp",
+            "version": "v5.13.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scheb/2fa-totp.git",
+                "reference": "6b03afbfeedd3e6fab491690a9702410e2770244"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scheb/2fa-totp/zipball/6b03afbfeedd3e6fab491690a9702410e2770244",
+                "reference": "6b03afbfeedd3e6fab491690a9702410e2770244",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/constant_time_encoding": "^2.2",
                 "scheb/2fa-bundle": "self.version",
-                "spomky-labs/otphp": "^10.0"
+                "spomky-labs/otphp": "^9.1|^10.0"
             },
             "type": "library",
             "autoload": {
@@ -3831,9 +4171,9 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-totp/tree/v6.0.2"
+                "source": "https://github.com/scheb/2fa-totp/tree/v5.13.2"
             },
-            "time": "2022-01-03T10:16:52+00:00"
+            "time": "2022-01-03T10:21:24+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -9113,16 +9453,16 @@
         },
         {
             "name": "symfony/ux-chartjs",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-chartjs.git",
-                "reference": "f2840f83f76ee42d6cb2dada771ecaea7ea8a1af"
+                "reference": "ae4f2b3c4da15e0144ade5f7f004a24a87223870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/f2840f83f76ee42d6cb2dada771ecaea7ea8a1af",
-                "reference": "f2840f83f76ee42d6cb2dada771ecaea7ea8a1af",
+                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/ae4f2b3c4da15e0144ade5f7f004a24a87223870",
+                "reference": "ae4f2b3c4da15e0144ade5f7f004a24a87223870",
                 "shasum": ""
             },
             "require": {
@@ -9177,7 +9517,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-chartjs/tree/v2.2.0"
+                "source": "https://github.com/symfony/ux-chartjs/tree/v2.3.0"
             },
             "funding": [
                 {
@@ -9193,7 +9533,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-13T19:14:08+00:00"
+            "time": "2022-07-06T20:17:22+00:00"
         },
         {
             "name": "symfony/validator",
@@ -9620,16 +9960,16 @@
         },
         {
             "name": "symfonycasts/verify-email-bundle",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SymfonyCasts/verify-email-bundle.git",
-                "reference": "7b9b1f59093dd260afa91eb6b3a220906a0fe0e2"
+                "reference": "725b33d1cdeda35055d3dee61f0c84c76f6da9ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SymfonyCasts/verify-email-bundle/zipball/7b9b1f59093dd260afa91eb6b3a220906a0fe0e2",
-                "reference": "7b9b1f59093dd260afa91eb6b3a220906a0fe0e2",
+                "url": "https://api.github.com/repos/SymfonyCasts/verify-email-bundle/zipball/725b33d1cdeda35055d3dee61f0c84c76f6da9ae",
+                "reference": "725b33d1cdeda35055d3dee61f0c84c76f6da9ae",
                 "shasum": ""
             },
             "require": {
@@ -9663,9 +10003,9 @@
             "description": "Simple, stylish Email Verification for Symfony",
             "support": {
                 "issues": "https://github.com/SymfonyCasts/verify-email-bundle/issues",
-                "source": "https://github.com/SymfonyCasts/verify-email-bundle/tree/v1.10.0"
+                "source": "https://github.com/SymfonyCasts/verify-email-bundle/tree/v1.11.0"
             },
-            "time": "2022-03-08T22:08:27+00:00"
+            "time": "2022-07-12T16:51:29+00:00"
         },
         {
             "name": "thecodingmachine/safe",
@@ -10632,16 +10972,16 @@
         },
         {
             "name": "zenstruck/assert",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zenstruck/assert.git",
-                "reference": "37bdfb98bb3a67fae96c5d09900b4cd14712c16d"
+                "reference": "a1c6501c975339ded3bcf8092a17277f6e21ac82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/assert/zipball/37bdfb98bb3a67fae96c5d09900b4cd14712c16d",
-                "reference": "37bdfb98bb3a67fae96c5d09900b4cd14712c16d",
+                "url": "https://api.github.com/repos/zenstruck/assert/zipball/a1c6501c975339ded3bcf8092a17277f6e21ac82",
+                "reference": "a1c6501c975339ded3bcf8092a17277f6e21ac82",
                 "shasum": ""
             },
             "require": {
@@ -10652,7 +10992,6 @@
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.4",
-                "phpstan/phpstan-phpunit": "^1.0",
                 "symfony/phpunit-bridge": "^5.3"
             },
             "type": "library",
@@ -10680,7 +11019,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zenstruck/assert/issues",
-                "source": "https://github.com/zenstruck/assert/tree/v1.1.0"
+                "source": "https://github.com/zenstruck/assert/tree/v1.2.0"
             },
             "funding": [
                 {
@@ -10688,7 +11027,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-27T20:08:43+00:00"
+            "time": "2022-07-12T12:30:27+00:00"
         },
         {
             "name": "zenstruck/callback",
