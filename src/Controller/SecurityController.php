@@ -43,7 +43,7 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @Route("/qr-code", name="qr_code")
+     * Function to display our qrcode
      */
     #[Route('/authentication/2fa/qr-code', name: 'app_qr_code')]
     #[IsGranted('ROLE_USER')]
