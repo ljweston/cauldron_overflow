@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Entity\Answer;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -68,7 +70,7 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show(Question $question)
+    public function show(Question $question, EntityManagerInterface $entityManager)
     {
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode');
@@ -77,7 +79,8 @@ class QuestionController extends AbstractController
          * symfony sees the "Question" type hint and looks for the wildcard value of "slug" to query
          * slug matches the property name of our entity "Question"
         */ 
-
+        // $repository = $entityManager->getRepository(Answer::class);
+        // dd($repository->findBy(['question'=> $question]));
         // question->getAnswers() does NOT get an array of answers is some sort of Doctrine Collection object
         // $answers = $question->getAnswers(); // There is an easier way
         // lazy loading: only do the query and loading when we ask it to. (like in the loop)
@@ -88,11 +91,6 @@ class QuestionController extends AbstractController
             // array of data or vars passed in
             'question' => $question, // question has getAnswers(), use in twig
         ]);
-
-        // return new Response(sprintf(
-        //     'Future page to show a question "%s"!',
-        //     ucwords(str_replace('-', '', $slug)) 
-        // ));
     }
 
     #[Route('/questions/edit/{slug}', name: "app_question_edit")]
