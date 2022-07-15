@@ -70,17 +70,19 @@ class QuestionController extends AbstractController
 
         // check if POST REQ
         if ($form->isSubmitted() && $form->isValid()) {
+            // name and question are filled in at the form
             $dt = new DateTime();
             $question->setAskedAt($dt);
             $question->setVotes(0);
             $question->setOwner($this->getUser());
-            dd($question);
-            // fill the question object with passed in data
-                // name, slug, askedAt, votes=0, owner= $user ($this->getUser()?)
+
             // use the entityManager to persist($question) and flush()
+            $entityManager->persist($question);
+            $entityManager->flush();
+            // do anything else:
 
             // flash a success message to the user
-
+            $this->addFlash('success', 'Your Question has been posted!');
             // redirect to questions show page
         }
 
