@@ -6,6 +6,7 @@ use App\Entity\Question;
 use App\Entity\Answer;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -61,11 +62,27 @@ class QuestionController extends AbstractController
     {
         // force login
         $this->denyAccessUnlessGranted('ROLE_USER'); // can throw an access denied exception
-        // check if POST REQ
+
         $question = new Question();
         // create a form:
         $form = $this->createForm(QuestionFormType::class, $question);
         $form->handleRequest($request);
+
+        // check if POST REQ
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dt = new DateTime();
+            $question->setAskedAt($dt);
+            $question->setVotes(0);
+            $question->setOwner($this->getUser());
+            dd($question);
+            // fill the question object with passed in data
+                // name, slug, askedAt, votes=0, owner= $user ($this->getUser()?)
+            // use the entityManager to persist($question) and flush()
+
+            // flash a success message to the user
+
+            // redirect to questions show page
+        }
 
         return $this->render('questions/new.html.twig', [
             'questionForm' => $form->createView(),
