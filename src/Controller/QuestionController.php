@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
+use QuestionFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,18 +54,28 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/questions/new")
+     * @Route("/questions/new", name="app_question_new")
      * @IsGranted("ROLE_USER")
      */
-    public function new()
+    public function new(Request $request, EntityManagerInterface $entityManager)
     {
         // force login
-        // $this->denyAccessUnlessGranted('ROLE_USER'); // can throw an access denied exception
+        $this->denyAccessUnlessGranted('ROLE_USER'); // can throw an access denied exception
+        // check if POST REQ
+        $question = new Question();
+        // create a form:
+        $form = $this->createForm(QuestionFormType::class, $question);
+        $form->handleRequest($request);
+
+        return $this->render('questions/new.html.twig', [
+            'questionForm' => $form->createView(),
+        ]);
+
+        // return new Response('This sounds like a great feature for V2');
+
         // if (!$this->isGranted('ROLE_ADMIN')) {
         //     throw $this->createAccessDeniedException('No access for you'); // error viewed by devs
         // }
-
-        return new Response('This sounds like a great feature for V2');
     }
 
     /**
