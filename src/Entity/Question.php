@@ -14,7 +14,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
-    use TimestampableEntity;
+    use TimestampableEntity; // trait with our fields and annotations
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +26,7 @@ class Question
 
     #[ORM\Column(type: 'string', length: 100, unique: true, name: 'slug')]
     #[Gedmo\Slug(fields: ['name'])]
-    private $slug;
+    private $slug; // slug is automatically set to name (title) with dashes
 
     #[ORM\Column(type: 'text')]
     private $question;
