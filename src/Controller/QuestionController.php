@@ -8,6 +8,7 @@ use App\Entity\QuestionTag;
 use App\Entity\Tag;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
+use App\Repository\QuestionTagRepository;
 use App\Repository\TagRepository;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -191,6 +192,19 @@ class QuestionController extends AbstractController
         $this->em->persist($questionTag);
 
         $this->em->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug' => $question->getSlug(),
+        ]);
+    }
+
+    #[Route('/questions/{slug}/remove-tag/{tagId}', name: "app_question_remove_tag")]
+    #[ParamConverter('question', options: ['mapping' => ['slug' => 'slug']])]
+    #[ParamConverter('tag', options: ['mapping' => ['tagId' => 'id']])]
+    #[Security("is_granted('EDIT', question)")]
+    public function deleteTag(Question $question, Tag $tag, QuestionTag $questionTag, QuestionTagRepository $repository): Response
+    {
+        $repository->remove($questionTag, true);
 
         return $this->redirectToRoute('app_question_show', [
             'slug' => $question->getSlug(),
