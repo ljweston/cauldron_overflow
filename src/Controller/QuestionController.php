@@ -84,17 +84,14 @@ class QuestionController extends AbstractController
             // flash a success message to the user
             $this->addFlash('success', 'Your Question has been posted!');
             // redirect to questions show page
+            return $this->redirectToRoute('app_question_show', [
+                'slug'=>$question->getSlug(),
+            ]);
         }
-
+        // no submittion, initial render 
         return $this->render('questions/new.html.twig', [
             'questionForm' => $form->createView(),
         ]);
-
-        // return new Response('This sounds like a great feature for V2');
-
-        // if (!$this->isGranted('ROLE_ADMIN')) {
-        //     throw $this->createAccessDeniedException('No access for you'); // error viewed by devs
-        // }
     }
 
     /**
