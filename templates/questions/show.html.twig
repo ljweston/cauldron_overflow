@@ -34,6 +34,13 @@
                                     </div>
                                 </form>
                             </div>
+                            {# Remove tags #}
+                            <div class="mt-2">
+                                <h3>Tags:</h3>
+                                {% for questionTag in question.questionTags %}
+                                    <a href="#" class="badge rounded-pill bg-light text-dark">{{ questionTag.tag }}</a>
+                                {% endfor %}
+                            </div>
                         </div>
                         <div class="col">
                             <div class="d-flex justify-content-between">
@@ -50,6 +57,21 @@
                                 <p class="d-inline">{{ question.question|parse_markdown }}</p>
                                 <p class="pt-4"><strong>--{{ question.owner.displayName }} ({{ question.owner.email }})</strong></p>
                             </div>
+                            {# Select a tag to add (with permission) #}
+                            {% if is_granted('EDIT', question) %}
+                                <div>
+                                    <h3>Tag Options:</h3>
+                                    {% for tag in tags %}
+                                        <a href="{{ path('app_question_add_tag', {
+                                            slug: question.slug,
+                                            tagId: tag.id
+                                        }) }}" class="badge rounded-pill bg-light text-dark">
+                                            {{ tag }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>
