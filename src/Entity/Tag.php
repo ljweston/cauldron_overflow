@@ -12,6 +12,11 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Tag
 {
     use TimestampableEntity;
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
     
     #[ORM\Id]
     #[ORM\GeneratedValue]

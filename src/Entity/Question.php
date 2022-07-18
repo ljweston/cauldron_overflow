@@ -184,6 +184,18 @@ class Question
         return $this->questionTags;
     }
 
+    // hasTag() helper to check if a passed in tag has already been assigned to a questionTag
+    public function hasTag(Tag $tag): bool
+    {
+        foreach($this->questionTags as $questionTag) {
+            if ($questionTag->getTag() === $tag) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function addQuestionTag(QuestionTag $questionTag): self
     {
         if (!$this->questionTags->contains($questionTag)) {
