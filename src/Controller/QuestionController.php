@@ -3,20 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Question;
-use App\Entity\Answer;
 use App\Entity\QuestionTag;
 use App\Entity\Tag;
-use App\Repository\AnswerRepository;
+use App\Form\QuestionFormType as FormQuestionFormType;
 use App\Repository\QuestionRepository;
 use App\Repository\QuestionTagRepository;
-use App\Repository\TagRepository;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
-use QuestionFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,26 +70,17 @@ class QuestionController extends AbstractController
 
         $question = new Question();
         // create a form:
-        $form = $this->createForm(QuestionFormType::class, $question);
+        $form = $this->createForm(FormQuestionFormType::class, $question);
         $form->handleRequest($request);
 
         // check if POST REQ
         if ($form->isSubmitted() && $form->isValid()) {
             // name and question are filled in at the form
-            // $dt = new DateTime();
-            // $question->setAskedAt($dt);
             $question->setOwner($this->getUser());
-            
-            // dd($question);
-            // set the QuestionTags relationship btwn QuestionTag->setQuestion()
-            // also need tags to complete the relationship.
-            // $question->addQuestionTag(); // accepts QuestionTag Obj
 
-            // use the entityManager to persist($question) and flush()
             $this->em->persist($question);
             $this->em->flush();
             // do anything else:
-
             // flash a success message to the user
             $this->addFlash('success', 'Your Question has been saved!');
             // redirect to questions show page
@@ -104,6 +91,20 @@ class QuestionController extends AbstractController
         // no submittion, initial render 
         return $this->render('questions/new.html.twig', [
             'questionForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/questions/publish/{slug}', name: "app_question_publish")]
+    public function publish(Question $question)
+    {
+        $dt = new DateTime();
+        $question->setAskedAt($dt);
+
+        $this->em->persist($question);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug'=>$question->getSlug(),
         ]);
     }
 
