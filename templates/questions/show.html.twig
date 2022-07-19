@@ -36,20 +36,23 @@
                             </div>
                             {# Remove tags #}
                             {% if is_granted('EDIT', question) %}
-                                <div class="mt-2">
-                                    <h3>Tags:</h3>
-                                    {% for questionTag in question.questionTags %}
-                                        <a href="{{ path('app_question_remove_tag', {
-                                            slug: question.slug,
-                                            tagId: questionTag.tag.id,
-                                            questionTag: questionTag
-                                        }) }}" class="badge rounded-pill bg-light text-dark">
-                                        {{ questionTag.tag }}
-                                        </a>
-                                    {% endfor %}
-                                </div>
-
-                                <button class="mt-5 btn btn-primary">Publish</button>
+                                <form action="{{ path('app_question_publish', { slug: question.slug }) }}" method="POST">
+                                    <div class="mt-2">
+                                        <h3>Tags:</h3>
+                                        {% for questionTag in question.questionTags %}
+                                            <a href="{{ path('app_question_remove_tag', {
+                                                slug: question.slug,
+                                                tagId: questionTag.tag.id,
+                                                questionTag: questionTag
+                                            }) }}" class="badge rounded-pill bg-light text-dark">
+                                            {{ questionTag.tag }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                    {% if question.askedAt == null %}
+                                        <button class="mt-5 btn btn-primary">Publish</button>
+                                    {% endif %}
+                                </form>                                
                             {% endif %}
                         </div>
                         <div class="col">
