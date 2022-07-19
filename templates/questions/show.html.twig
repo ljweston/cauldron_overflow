@@ -35,23 +35,23 @@
                                 </form>
                             </div>
                             {# Remove tags #}
-                            {% if is_granted('EDIT', question) %}
-                                <div class="mt-2">
-                                        <h3>Tags:</h3>
-                                        {% for questionTag in question.questionTags %}
-                                            <a href="{{ path('app_question_remove_tag', {
-                                                id: questionTag.id,
-                                            }) }}" class="badge rounded-pill bg-light text-dark">
-                                            {{ questionTag.tag }}
-                                            </a>
-                                        {% endfor %}
-                                </div>
-                                {% if question.askedAt == null %}
-                                <form action="{{ path('app_question_publish', { slug: question.slug }) }}" method="POST">    
-                                    <button class="mt-5 btn btn-primary">Publish</button>
-                                </form>
-                                {% endif %}                                
-                            {% endif %}
+                        {% if is_granted('EDIT', question) %}
+                            <div class="mt-2">
+                                    <h3>Tags:</h3>
+                                    {% for questionTag in question.questionTags %}
+                                        <a href="{{ path('app_question_remove_tag', {
+                                            id: questionTag.id,
+                                        }) }}" class="badge rounded-pill bg-light text-dark">
+                                        {{ questionTag.tag }}
+                                        </a>
+                                    {% endfor %}
+                            </div>
+                            {% if question.askedAt == null %}   
+                                <a href="{{ path('app_question_publish', { slug: question.slug }) }}" class="mt-5 btn btn-primary">
+                                Publish
+                                </a>
+                            {% endif %}                                
+                        {% endif %}
                         </div>
                         <div class="col">
                             <div class="d-flex justify-content-between">
