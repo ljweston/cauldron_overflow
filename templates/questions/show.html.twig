@@ -41,9 +41,7 @@
                                         <h3>Tags:</h3>
                                         {% for questionTag in question.questionTags %}
                                             <a href="{{ path('app_question_remove_tag', {
-                                                slug: question.slug,
-                                                tagId: questionTag.tag.id,
-                                                questionTag: questionTag
+                                                id: questionTag.id,
                                             }) }}" class="badge rounded-pill bg-light text-dark">
                                             {{ questionTag.tag }}
                                             </a>
