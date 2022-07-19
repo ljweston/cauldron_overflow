@@ -7,14 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\QuestionRepository;
-use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
-    use TimestampableEntity;
+    use TimestampableEntity; // trait with our fields and annotations
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,13 +22,15 @@ class Question
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $name;
 
     #[ORM\Column(type: 'string', length: 100, unique: true, name: 'slug')]
     #[Gedmo\Slug(fields: ['name'])]
-    private $slug;
+    private $slug; // slug is automatically set to name (title) with dashes
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $question;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -182,6 +184,18 @@ class Question
     public function getQuestionTags(): Collection
     {
         return $this->questionTags;
+    }
+
+    // hasTag() helper to check if a passed in tag has already been assigned to a questionTag
+    public function hasTag(Tag $tag): bool
+    {
+        foreach($this->questionTags as $questionTag) {
+            if ($questionTag->getTag() === $tag) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function addQuestionTag(QuestionTag $questionTag): self

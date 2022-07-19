@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Question;
-use App\Entity\Answer;
-use App\Repository\AnswerRepository;
+use App\Entity\QuestionTag;
+use App\Entity\Tag;
+use App\Form\QuestionFormType;
 use App\Repository\QuestionRepository;
-use Doctrine\ORM\EntityManager;
+use App\Repository\QuestionTagRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -16,20 +18,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class QuestionController extends AbstractController
 {
     private $logger;
     private $isDebug;
-    public function __construct(LoggerInterface $logger, bool $isDebug)
+    private $em;
+
+    public function __construct(LoggerInterface $logger, bool $isDebug, EntityManagerInterface $em)
     {
         $this->logger = $logger;
         $this->isDebug = $isDebug;
+        $this->em = $em;
     }
 
-    /** only match if page is a digit "\d+"
-     * @Route("/{page<\d+>}", name="app_homepage")
-     */
+    /** only match if page is a digit "\d+" */
+    #[Route('/{page<\d+>}', name: "app_homepage")]
     public function homepage(QuestionRepository $repository, int $page = 1)
     {
         $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder();
@@ -52,25 +58,52 @@ class QuestionController extends AbstractController
          */
     }
 
-    /**
-     * @Route("/questions/new")
-     * @IsGranted("ROLE_USER")
-     */
-    public function new()
+    #[Route("/questions/new", name: "app_question_new")]
+    #[Security("is_granted('ROLE_USER')")]
+    public function new(Request $request)
     {
-        // force login
-        // $this->denyAccessUnlessGranted('ROLE_USER'); // can throw an access denied exception
-        // if (!$this->isGranted('ROLE_ADMIN')) {
-        //     throw $this->createAccessDeniedException('No access for you'); // error viewed by devs
-        // }
+        $question = new Question();
+        // create a form:
+        $form = $this->createForm(QuestionFormType::class, $question);
+        $form->handleRequest($request);
 
-        return new Response('This sounds like a great feature for V2');
+        // check if POST REQ
+        if ($form->isSubmitted() && $form->isValid()) {
+            // name and question are filled in at the form
+            $question->setOwner($this->getUser());
+
+            $this->em->persist($question);
+            $this->em->flush();
+            // do anything else:
+            // flash a success message to the user
+            $this->addFlash('success', 'Your Question has been saved!');
+            // redirect to questions show page
+            return $this->redirectToRoute('app_question_show', [
+                'slug'=>$question->getSlug(),
+            ]);
+        }
+        // no submittion, initial render 
+        return $this->render('questions/new.html.twig', [
+            'questionForm' => $form->createView(),
+        ]);
     }
 
-    /**
-     * @Route("/questions/{slug}", name="app_question_show")
-     */
-    public function show(Question $question, EntityManagerInterface $entityManager)
+    #[Route('/questions/publish/{slug}', name: "app_question_publish")]
+    #[Security("is_granted('ROLE_USER')")]
+    public function publish(Question $question)
+    {
+        $dt = new DateTime();
+        $question->setAskedAt($dt);
+
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug'=>$question->getSlug(),
+        ]);
+    }
+
+    #[Route("/questions/{slug}", name: "app_question_show")]
+    public function show(Question $question)
     {
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode');
@@ -87,9 +120,14 @@ class QuestionController extends AbstractController
 
         // recall that the controllers always require a RESPONSE OBJ be returned.
         // THUS: render returns a response object
+        $repository = $this->em->getRepository(Tag::class);
+        // filter[], sorting[]
+        $tags = $repository->findBy([], ['name' => 'asc']);
+
         return $this->render('questions/show.html.twig', [
             // array of data or vars passed in
             'question' => $question, // question has getAnswers(), use in twig
+            'tags' => $tags,
         ]);
     }
 
@@ -105,10 +143,8 @@ class QuestionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/questions/{slug}/vote", name="app_question_vote", methods="POST")
-     */
-    public function questionVote(Question $question, Request $request, EntityManagerInterface $entityManager)
+    #[Route("/questions/{slug}/vote", name: "app_question_vote", methods: "POST")]
+    public function questionVote(Question $question, Request $request)
     {
         // Request is not a type hint. It is data from our form we submit
         $direction = $request->request->get('direction');
@@ -120,11 +156,47 @@ class QuestionController extends AbstractController
         }
 
         // SAVE
-        $entityManager->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('app_question_show', [
             'slug' => $question->getSlug(),
         ]);
     }
 
+    #[Route('/questions/{slug}/add-tag/{tagId}', name: "app_question_add_tag")]
+    #[ParamConverter('question', options: ['mapping' => ['slug' => 'slug']])]
+    #[ParamConverter('tag', options: ['mapping' => ['tagId' => 'id']])]
+    #[Security("is_granted('EDIT', question)")]
+    public function addTag(Question $question, Tag $tag): Response
+    {
+        if ($question->hasTag($tag)) {
+            $this->addFlash('error', 'This tag has already been added');
+            return $this->redirectToRoute('app_question_show', [
+                'slug' => $question->getSlug(),
+            ]);
+        }
+
+        $questionTag = new QuestionTag();
+        $questionTag->setQuestion($question);
+        $questionTag->setTag($tag);
+
+        $this->em->persist($questionTag);
+
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug' => $question->getSlug(),
+        ]);
+    }
+
+    #[Route('/questions/remove-tag/{id}', name: "app_question_remove_tag")]
+    #[Security("is_granted('REMOVE', questionTag)")]
+    public function deleteTag(QuestionTag $questionTag, QuestionTagRepository $repository): Response
+    {
+        $repository->remove($questionTag, true);
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug' => $questionTag->getQuestion()->getSlug(),
+        ]);
+    }
 }

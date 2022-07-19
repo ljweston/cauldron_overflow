@@ -13,7 +13,7 @@ class Answer
     public const STATUS_NEEDS_APPROVAL = 'needs_approval';
     public const STATUS_SPAM = 'spam';
     public const STATUS_APPROVED = 'approved';
-    use TimestampableEntity;
+    use TimestampableEntity; // trait with createdAt and updatedAt
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -49,7 +49,7 @@ class QuestionRepository extends ServiceEntityRepository
        return $this->addIsAskedQueryBuilder()
            ->orderBy('q.askedAt', 'DESC')
            ->leftJoin('q.questionTags', 'question_tag')
-           ->innerJoin('question_tag.tag', 'tag')
+           ->innerJoin('question_tag.tag', 'tag') // published questions must have tags
            ->addSelect(['question_tag', 'tag'])
        ;
    }
