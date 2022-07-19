@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\QuestionTag;
 use App\Entity\Tag;
-use App\Form\QuestionFormType as FormQuestionFormType;
+use App\Form\QuestionFormType;
 use App\Repository\QuestionRepository;
 use App\Repository\QuestionTagRepository;
 use DateTime;
@@ -65,12 +65,9 @@ class QuestionController extends AbstractController
      */
     public function new(Request $request)
     {
-        // force login
-        $this->denyAccessUnlessGranted('ROLE_USER'); // can throw an access denied exception
-
         $question = new Question();
         // create a form:
-        $form = $this->createForm(FormQuestionFormType::class, $question);
+        $form = $this->createForm(QuestionFormType::class, $question);
         $form->handleRequest($request);
 
         // check if POST REQ
@@ -199,16 +196,14 @@ class QuestionController extends AbstractController
         ]);
     }
 
-    #[Route('/questions/{slug}/remove-tag/{tagId}', name: "app_question_remove_tag")]
-    #[ParamConverter('question', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('tag', options: ['mapping' => ['tagId' => 'id']])]
-    #[Security("is_granted('EDIT', question)")]
-    public function deleteTag(Question $question, Tag $tag, QuestionTag $questionTag, QuestionTagRepository $repository): Response
+    #[Route('/questions/remove-tag/{id}', name: "app_question_remove_tag")]
+    #[Security("is_granted('REMOVE', questionTag)")]
+    public function deleteTag(QuestionTag $questionTag, QuestionTagRepository $repository): Response
     {
         $repository->remove($questionTag, true);
 
         return $this->redirectToRoute('app_question_show', [
-            'slug' => $question->getSlug(),
+            'slug' => $questionTag->getQuestion()->getSlug(),
         ]);
     }
 }
