@@ -3,15 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Question;
-use App\Entity\QuestionTag;
-use App\Entity\Tag;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuestionFormType extends AbstractType
 {
@@ -20,16 +16,9 @@ class QuestionFormType extends AbstractType
         $builder
             // title
             ->add('name', TextType::class, [
-                'required' => true
+                'label' => 'Title',
             ])
-            ->add('question', TextareaType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'You must ask a question',
-                    ])
-                ],
-                'empty_data' => 'Enter your detailed question here!'
-            ])
+            ->add('question', TextareaType::class)
         ;
     }
 
