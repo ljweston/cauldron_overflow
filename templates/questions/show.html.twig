@@ -36,8 +36,7 @@
                             </div>
                             {# Remove tags #}
                             {% if is_granted('EDIT', question) %}
-                                <form action="{{ path('app_question_publish', { slug: question.slug }) }}" method="POST">
-                                    <div class="mt-2">
+                                <div class="mt-2">
                                         <h3>Tags:</h3>
                                         {% for questionTag in question.questionTags %}
                                             <a href="{{ path('app_question_remove_tag', {
@@ -46,11 +45,12 @@
                                             {{ questionTag.tag }}
                                             </a>
                                         {% endfor %}
-                                    </div>
-                                    {% if question.askedAt == null %}
-                                        <button class="mt-5 btn btn-primary">Publish</button>
-                                    {% endif %}
-                                </form>                                
+                                </div>
+                                {% if question.askedAt == null %}
+                                <form action="{{ path('app_question_publish', { slug: question.slug }) }}" method="POST">    
+                                    <button class="mt-5 btn btn-primary">Publish</button>
+                                </form>
+                                {% endif %}                                
                             {% endif %}
                         </div>
                         <div class="col">

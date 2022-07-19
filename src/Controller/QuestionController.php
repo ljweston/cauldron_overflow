@@ -34,9 +34,8 @@ class QuestionController extends AbstractController
         $this->em = $em;
     }
 
-    /** only match if page is a digit "\d+"
-     * @Route("/{page<\d+>}", name="app_homepage")
-     */
+    /** only match if page is a digit "\d+" */
+    #[Route('/{page<\d+>}', name: "app_homepage")]
     public function homepage(QuestionRepository $repository, int $page = 1)
     {
         $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder();
@@ -59,10 +58,8 @@ class QuestionController extends AbstractController
          */
     }
 
-    /**
-     * @Route("/questions/new", name="app_question_new")
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route("/questions/new", name: "app_question_new")]
+    #[Security("is_granted('ROLE_USER')")]
     public function new(Request $request)
     {
         $question = new Question();
@@ -92,12 +89,12 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/questions/publish/{slug}', name: "app_question_publish")]
+    #[Security("is_granted('ROLE_USER')")]
     public function publish(Question $question)
     {
         $dt = new DateTime();
         $question->setAskedAt($dt);
 
-        $this->em->persist($question);
         $this->em->flush();
 
         return $this->redirectToRoute('app_question_show', [
@@ -105,9 +102,7 @@ class QuestionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/questions/{slug}", name="app_question_show")
-     */
+    #[Route("/questions/{slug}", name: "app_question_show")]
     public function show(Question $question)
     {
         if ($this->isDebug) {
@@ -148,9 +143,7 @@ class QuestionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/questions/{slug}/vote", name="app_question_vote", methods="POST")
-     */
+    #[Route("/questions/{slug}/vote", name: "app_question_vote", methods: "POST")]
     public function questionVote(Question $question, Request $request)
     {
         // Request is not a type hint. It is data from our form we submit
