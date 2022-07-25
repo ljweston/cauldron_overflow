@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 // Look at that, still an entity
 
@@ -28,6 +29,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(['user:read'])]
+    #[Assert\NotBlank(message: 'Please enter a valid email address')]
+    #[Assert\Email()]
     private $email;
 
     #[ORM\Column(type: 'json')]
