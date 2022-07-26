@@ -8,15 +8,9 @@
             <div class="bg-light mt-4 p-4">
                 <h1>Ask a Question</h1>
 
-                {{ form_start(questionForm) }}
-                    {{ form_row(questionForm.name) }}
-                    {{ form_row(questionForm.question) }}
-
-                    {# submition button #}
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    {# Cancel/ discard button #}
-                    {# <button class="btn btn-danger">Discard</button> #}
-                {{ form_end(questionForm) }}
+                {{ include('questions/_questionForm.html.twig', {
+                    button_text: 'Submit'
+                }) }}
             </div>
         </div>
     </div>

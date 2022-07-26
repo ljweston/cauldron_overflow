@@ -3,22 +3,16 @@
 {% block title %}Edit Your Question{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="my-4">Edit Question</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="my-4">Edit Question</h1>
 
-            {{ form_start(questionForm) }}
-                {{ form_row(questionForm.name) }}
-                {{ form_row(questionForm.question) }}
+                {{ include('questions/_questionForm.html.twig', {
+                    button_text: 'Update'
+                }) }}
 
-                {# submition button #}
-                <button type="submit" class="btn btn-primary">Submit</button>
-                {# Cancel/ discard button #}
-                {# <button class="btn btn-danger">Discard</button> #}
-            {{ form_end(questionForm) }}
-
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

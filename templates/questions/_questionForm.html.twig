@@ -1,0 +1,9 @@
+{{ form_start(questionForm) }}
+    {{ form_row(questionForm.name) }}
+    {{ form_row(questionForm.question) }}
+
+    {# submition button #}
+    <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+    {# Cancel/ discard button #}
+    {# <button class="btn btn-danger">Discard</button> #}
+{{ form_end(questionForm) }}
