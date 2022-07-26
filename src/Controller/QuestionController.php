@@ -132,14 +132,27 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/questions/edit/{slug}', name: "app_question_edit")]
-    public function edit(Question $question)
+    public function edit(Question $question, Request $request, EntityManagerInterface $em)
     {
-        // manual security logic!!
-        // Need a security check
         $this->denyAccessUnlessGranted('EDIT', $question);
 
+        $form = $this->createForm(QuestionFormType::class, $question);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($question);
+            $em->flush();
+
+            $this->addFlash('success', 'Question updated!');
+
+            return $this->redirectToRoute('app_question_show', [
+                'slug'=>$question->getSlug(),
+            ]);
+        }
+
         return $this->render('questions/edit.html.twig', [
-            'question' => $question,
+            'questionForm' => $form->createView(),
         ]);
     }
 
