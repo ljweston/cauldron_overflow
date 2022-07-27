@@ -36,9 +36,16 @@ class QuestionController extends AbstractController
 
     /** only match if page is a digit "\d+" */
     #[Route('/{page<\d+>}', name: "app_homepage")]
-    public function homepage(QuestionRepository $repository, int $page = 1)
+    // #[ParamConverter('sortBy', options: ['mapping' => ['sort_by' => 'sortBy']])]
+    public function homepage(Request $request, QuestionRepository $repository, int $page = 1)
     {
-        $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder();
+        // This can be done cleaner in some way. Possible with passed in values.
+        if ($request->query->has('sort_by')) {
+            $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder($request->query->get('sort_by'));
+        } else {
+            $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder();
+        }
+        
         // $html = $twigEnvironment->render('questions/homepage.html.twig'); // returns string with html
         $pagerfanta = new Pagerfanta(
             new QueryAdapter($queryBuilder)
@@ -47,7 +54,7 @@ class QuestionController extends AbstractController
         $pagerfanta->setCurrentPage($page);
         // return new Response($html);
         return $this->render('questions/homepage.html.twig', [
-            'pager' => $pagerfanta // passing this object that contains the questions
+            'pager' => $pagerfanta // passing this object that contains the questions treat like an array
         ]);
 
         /**
