@@ -41,20 +41,20 @@ class QuestionRepository extends ServiceEntityRepository
         }
     }
 
-   public function createAskedOrderedByNewestQueryBuilder(string $sortBy = 'newest'): ORMQueryBuilder
+   public function createFilteredQueryBuilder(string $filter): ORMQueryBuilder
    {
         // Doctrine wants us to believe there is a direct connection between TAGS and QUESTIONS
         // to do the join we want the "MANY" tags for this question and let doctrine do the rest
         // SO we do the LEFTJOIN
         
         // check the passed in value. We can also change this so that we are passed a value from a drop down select.
-        if ($sortBy === 'top-rated') {
+        if ($filter === 'top-rated') {
             $sort = 'q.votes';
             $order = 'DESC';
-        } else if ($sortBy === 'oldest') {
+        } else if ($filter === 'oldest') {
             $sort = 'q.askedAt';
             $order = 'ASC';
-        } else if ($sortBy === 'lowest-rated') {
+        } else if ($filter === 'low-rated') {
             $sort = 'q.votes';
             $order = 'ASC';
         } else {
