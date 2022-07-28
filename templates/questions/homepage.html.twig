@@ -12,19 +12,23 @@
         <div class="col">
             <a href="{{ path('app_question_new') }}" class="btn btn-question">Ask a Question</a>
         </div>
-        <div class="col-2">
-        {# Value doesn't get stored on form submit, shows the Newest each time #}
-            <form action="{{ path('app_homepage') }}">
-                <Select class="form-select" name="sort_by" id="sort_by">
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="top-rated">Top Rated</option>
-                    <option value="lowest-rated">Lowest Rated</option>
-                </Select>
-                <button class="btn btn-sm btn-primary" type="submit">
-                        Sort
-                </button>
-            </form>
+        <div class="col">
+            {{ form_start(filter_form) }}
+                {{ form_rest(filter_form) }}
+
+                <button class="btn btn-primary" type="submit">Sort</button>
+            {{ form_end(filter_form) }}
+            <hr>
+            {% set filters = {'newest': 'Newest', 'oldest': 'Oldest', 'top-rated': 'Top Rated', 'low-rated': 'Lowest Rated'} %}
+            <ul class="nav nav-pills justify-content-end">
+                {% for key, value in filters %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ sort_filter == key ? 'active' : '' }}" href="{{ path('app_homepage_filter', { filter: key}) }}">
+                            {{ value }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     <div class="row">
