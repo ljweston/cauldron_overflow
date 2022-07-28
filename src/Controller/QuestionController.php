@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\QuestionTag;
 use App\Entity\Tag;
+use App\Form\FilterType;
 use App\Form\QuestionFormType;
 use App\Repository\QuestionRepository;
 use App\Repository\QuestionTagRepository;
@@ -36,16 +37,21 @@ class QuestionController extends AbstractController
 
     /** only match if page is a digit "\d+" */
     #[Route('/{page<\d+>}', name: "app_homepage")]
-    // #[ParamConverter('sortBy', options: ['mapping' => ['sort_by' => 'sortBy']])]
-    public function homepage(Request $request, QuestionRepository $repository, int $page = 1)
-    {
-        // This can be done cleaner in some way. Possible with passed in values.
-        if ($request->query->has('sort_by')) {
-            $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder($request->query->get('sort_by'));
-        } else {
-            $queryBuilder = $repository->createAskedOrderedByNewestQueryBuilder();
+    #[Route('/{filter}/{page<\d+>}', name: "app_homepage_filter", requirements: ['filter' => 'newest|oldest|top-rated|low-rated'])]
+    // You can have multiple routes to an action
+    public function homepage(Request $request, QuestionRepository $repository, int $page = 1, string $filter = 'newest')
+    {   
+        $form = $this->createForm(FilterType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // do the search
+            $filter = $form->getData()['sort_by'];
         }
-        
+
+        // This can be done cleaner in some way. Possible with passed in values.
+        $queryBuilder = $repository->createFilteredQueryBuilder($filter);
+
         // $html = $twigEnvironment->render('questions/homepage.html.twig'); // returns string with html
         $pagerfanta = new Pagerfanta(
             new QueryAdapter($queryBuilder)
@@ -54,7 +60,9 @@ class QuestionController extends AbstractController
         $pagerfanta->setCurrentPage($page);
         // return new Response($html);
         return $this->render('questions/homepage.html.twig', [
-            'pager' => $pagerfanta // passing this object that contains the questions treat like an array
+            'pager' => $pagerfanta,
+            'sort_filter' => $filter,
+            'filter_form' => $form->createView(),
         ]);
 
         /**
@@ -139,16 +147,14 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/questions/edit/{slug}', name: "app_question_edit")]
+    #[Security("is_granted('EDIT', question)")]
     public function edit(Question $question, Request $request, EntityManagerInterface $em)
     {
-        $this->denyAccessUnlessGranted('EDIT', $question);
-
         $form = $this->createForm(QuestionFormType::class, $question);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($question);
             $em->flush();
 
             $this->addFlash('success', 'Question updated!');
